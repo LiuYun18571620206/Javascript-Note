@@ -18,3 +18,31 @@ function commafy(num){
     }
     return arry.join('')
 }
+
+//计算图片平均颜色值
+function handleImgOnload(img){
+        let canvas=document.createElement('canvas')         
+        let image=img                                      
+        canvas.width=image.width
+        canvas.height=image.height
+        let context=canvas.getContext("2d")
+        //在canvas中将img绘制出来
+        context.drawImage(image,0,0,canvas.width,canvas.height)
+        //获取canvas中的像素信息
+        let data=context.getImageData(0,0,image.width,image.height).data
+        let [r,g,b]=[0,0,0];
+        //竖向遍历
+        for(let i=0;i<image.height;i++){
+        //横向遍历
+            for(let j=0;j<image.width;j++){
+                r+=data[(i*j+j)*4]
+                g+=data[(i*j+j)*4+1]
+                b+=data[(i*j+j)*4+2]
+            }
+        }
+        //除以图片的面积取平均值
+        r=Math.floor(r/(image.height*image.width))
+        g=Math.floor(g/(image.height*image.width))
+        b=Math.floor(b/(image.height*image.width))
+        return [r,g,b]
+    }
