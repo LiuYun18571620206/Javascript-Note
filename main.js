@@ -48,3 +48,6 @@ function handleImgOnload(img){
     }
 
 //对对象执行深拷贝
+
+//查找对象中的循环引用
+
