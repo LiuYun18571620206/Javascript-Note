@@ -46,3 +46,5 @@ function handleImgOnload(img){
         b=Math.floor(b/(image.height*image.width))
         return [r,g,b]
     }
+
+//对对象执行深拷贝
