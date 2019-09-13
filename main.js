@@ -47,7 +47,23 @@ function handleImgOnload(img){
         return [r,g,b]
     }
 
-//对对象执行深拷贝
-
+//深拷贝
+function DeepClone(obj){
+    if(Array.isArray(obj)){
+        let value=[]
+        for(let i=0;i<obj.length;i++){
+            value.push(DeepClone(obj[i]))
+        }
+        return value
+    }else if(typeof obj==='object'&&obj!==null){
+        let value={}
+        for(let i in obj){
+            value[i]=DeepClone(obj[i])
+        }
+        return value
+    }else{
+        return obj
+    }
+}
 //查找对象中的循环引用
 
