@@ -65,7 +65,7 @@ function DeepClone(obj){
         return obj
     }
 }
-//查找对象中的循环引用
+//替换对象中的循环引用
 function CircularReference(obj,cache=[]){
     cache.push(obj)
     for(let i of Object.keys(obj)){
