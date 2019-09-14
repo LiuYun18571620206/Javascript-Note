@@ -66,4 +66,18 @@ function DeepClone(obj){
     }
 }
 //查找对象中的循环引用
-
+function CircularReference(obj,cache=[]){
+    cache.push(obj)
+    for(let i of Object.keys(obj)){
+        if(typeof obj[i]==='object'&&obj[i]!==null){
+            if(cache.indexOf(obj[i])===-1){
+                let caches=[...cache]
+                CircularReference(obj[i],caches)
+            }else{
+                obj[i]='循环引用'
+                return
+            }
+        }
+    }
+    return
+}
