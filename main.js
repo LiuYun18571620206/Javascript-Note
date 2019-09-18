@@ -82,3 +82,36 @@ function CircularReference(obj,cache=[]){
     }
     return
 }
+
+//获取参数列表
+function getHash(){
+    let str=window.location.search,arry,obj={}
+    str=str.substr(1)
+    arry=str.split('&')
+    arry=arry.map((v)=>{
+        let value
+        value=v.split('=')
+        obj[value[0]]=value[1]
+    })
+    return obj
+}
+
+//将页面所有Img替换为a
+function repalceImg(){
+    let old=[...document.querySelectorAll('img')]
+    old=old.filter((v)=>{
+        let str=v.src.substr(v.src.length-4)
+        if(str==='.jpg'){
+            return true
+        }else{
+            return false
+        }
+    })
+    old.forEach((v)=>{
+        let src=v.src,father=v.parentNode,a
+        father.removeChild(v)
+        a=document.createElement('a')
+        a.href=src
+        father.appendChild(a)
+    })
+}
