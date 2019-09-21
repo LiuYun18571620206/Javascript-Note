@@ -96,7 +96,7 @@ function getHash(){
     return obj
 }
 
-//将页面所有Img替换为a
+//将页面所有JPG替换为a
 function repalceImg(){
     let old=[...document.querySelectorAll('img')]
     old=old.filter((v)=>{
