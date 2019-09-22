@@ -116,4 +116,14 @@ function repalceImg(){
     })
 }
 //防抖函数
+function debounce(fn,wait,...parameter){
+    let timeout=null
+    return function(){
+        if(timeout!==null){
+            clearTimeout(timeout)
+        }
+        timeout=setTimeout(fn,wait,...parameter)
+    }
+}
 //节流函数
+function throttle(){}
