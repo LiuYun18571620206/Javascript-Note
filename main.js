@@ -115,6 +115,7 @@ function repalceImg(){
         father.appendChild(a)
     })
 }
+
 //防抖函数
 function debounce(fn,wait,...parameter){
     let timeout=null
@@ -125,6 +126,7 @@ function debounce(fn,wait,...parameter){
         timeout=setTimeout(fn,wait,...parameter)
     }
 }
+
 //节流函数
 function throttle(fn,delay){
     let time=Date.now()
@@ -134,4 +136,21 @@ function throttle(fn,delay){
             time=Date.now()
         }
     }
+}
+
+//简易Redux
+function createStore(reducer){
+    let state
+    let listeners=[]
+    const subscribe=(v)=>listeners.push(v)
+    let getState=()=>state
+    let dispatch=function(action){
+        if(!action){
+            action={type:null}
+        }
+        state=reducer(state,action)
+        listeners.forEach((fn)=>{fn()})
+    }
+    dispatch()
+    return {getState,dispatch,subscribe}
 }
