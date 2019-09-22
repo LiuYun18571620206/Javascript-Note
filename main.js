@@ -126,4 +126,12 @@ function debounce(fn,wait,...parameter){
     }
 }
 //节流函数
-function throttle(){}
+function throttle(fn,delay){
+    let time=Date.now()
+    return function(){
+        if(Date.now()-time>=delay){
+            fn()
+            time=Date.now()
+        }
+    }
+}
