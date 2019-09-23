@@ -154,3 +154,32 @@ function createStore(reducer){
     dispatch()
     return {getState,dispatch,subscribe}
 }
+
+//原生call、apply、bind实现
+function call(context,arry){
+    context=context||window
+    arry=arry||[]
+    let fn=this,sym=Symbol('fn')
+    context[sym]=fn
+    let value=context[sym](arry)
+    delete context[sym]
+    return value
+}
+function apply(context,...c){
+    context=context||window
+    let fn=this,sym=Symbol('fn')
+    context[sym]=fn
+    let value=context[sym](...c)
+    delete context[sym]
+    return value
+}
+function bind(context,...c){
+    context=context||window
+    let fn=this,sym=Symbol('fn')
+    return function(){
+        context[sym]=fn
+        let value=context[sym](...c)
+        delete context[sym]
+        return value
+    }
+}
