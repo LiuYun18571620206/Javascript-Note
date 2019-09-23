@@ -183,3 +183,8 @@ function bind(context,...c){
         return value
     }
 }
+Function.prototype.callA=call
+Function.prototype.applyA=apply
+Function.prototype.bindA=bind
+
+//
