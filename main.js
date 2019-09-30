@@ -187,4 +187,28 @@ Function.prototype.callA=call
 Function.prototype.applyA=apply
 Function.prototype.bindA=bind
 
+//Cookie操作
+function setCookie(name,value,time){
+        let t=new Date()
+        t=new Date(t.getTime()+time).toUTCString()
+        let expires='expires='+t
+        document.cookie=`${name}=${value};${expires}`
+}
+function getCookie(name){
+    let cookie=document.cookie
+    cookie=cookie.split('; ')
+    cookie=cookie.map((v)=>{
+        return v.split('=')
+    })
+    for(let i=0,len=cookie.length;i<len;i++){
+        if(cookie[i][0]===name){
+            return cookie[i][1]
+        }
+    }
+    return ''
+}
+function removeCookie(name){
+    setCookie(name,'',-1000)
+}
+
 //
