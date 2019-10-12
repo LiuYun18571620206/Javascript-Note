@@ -211,4 +211,29 @@ function removeCookie(name){
     setCookie(name,'',-1000)
 }
 
-//
+//Vue2.x双向绑定理论实现
+function model(obj1,obj2,attribute){
+    //attribute是要绑定的字符串属性
+    let value=obj1[attribute]?obj1[attribute]:null;
+    if(!value)return
+    Object.defineProperties(obj1,{
+        [attribute]:{
+            get(){
+                return value
+            },
+            set(newValue,oldValue){
+                value=newValue
+            }
+        }
+    })
+    Object.defineProperties(obj2,{
+        [attribute]:{
+            get(){
+                return value
+            },
+            set(newValue,oldValue){
+                value=newValue
+            }
+        }
+    })
+}
