@@ -202,9 +202,9 @@ Function.prototype.myBind=function(context,...c){
     let fn=this
     let nop=function(...s){
         if(Reflect.getPrototypeOf(this)===nop.prototype){
+            //判断是否为new操作
             this.prototype=fn.prototype
         }
-        console.log(context,c,fn)
         return fn.myCall(context,...c,...s)
     }
     return nop
