@@ -33,9 +33,6 @@ let oldNewObject=new Map()
 //记录不克隆的对象
 let nonClone=new Set()
 
-//用于记录暂没有新对象的旧对象
-let sym=Symbol('z')
-
 //设置避开哪些对象,true为要Clone,false为不Clone
 let Options={
     setting:{
@@ -52,7 +49,6 @@ let Options={
     },
     ignore:[]
 }
-
 //深度遍历优先检查循环引用
 function DeepClone(obj,options){
     if(options){
@@ -65,8 +61,8 @@ function DeepClone(obj,options){
         return oldNewObject.get(obj)
     }
     return DistributeCloneHandlers(obj)
+    
 }
-
 function OptionsSet(options){
     Options.setting={...Options['setting'],...options['setting']}
     if(Array.isArray(options.ignore)){
@@ -83,7 +79,6 @@ function OptionsSet(options){
         nonClone.add(v)
     })
 }
-
 function FunctionClone(fn){
     //克隆一个函数
     if(!Options.setting.fn||nonClone.has(fn)){
@@ -95,8 +90,7 @@ function FunctionClone(fn){
     oldNewObject.set(fn,newFN)
     return newFN
 }
-
-function ObjectClone(obj){
+ function ObjectClone(obj){
     if(!Options.setting.Object||nonClone.has(obj)){
         return obj
     }
@@ -112,7 +106,6 @@ function ObjectClone(obj){
     })
     return newObj
 }
-
 function ArrayClone(arry){
     if(!Options.setting.Array||nonClone.has(arry)){
         return arry
@@ -125,7 +118,6 @@ function ArrayClone(arry){
     })
     return newArray
 }
-
 function RegExpClone(reg){
     if(!Options.setting.RegExp||nonClone.has(reg)){
         return reg
@@ -134,7 +126,6 @@ function RegExpClone(reg){
     oldNewObject.set(reg,newReg)
     return newReg
 }
-
 function DateClone(date){
     if(!Options.setting.Date||nonClone.has(date)){
         return date
@@ -143,7 +134,6 @@ function DateClone(date){
     oldNewObject.set(date,newDate)
     return newDate
 }
-
 function HTMLClone(html){
     if(!Options.setting.Html||nonClone.has(html)){
         return html
@@ -152,7 +142,6 @@ function HTMLClone(html){
     oldNewObject.set(html,newElement)
     return newElement
 }
-
 function SetClone(set){
     if(!Options.setting.Set||nonClone.has(set)){
         return set
@@ -168,7 +157,6 @@ function SetClone(set){
     })
     return newSet
 }
-
 function MapClone(map){
     if(!Options.setting.Map||nonClone.has(map)){
         return map
@@ -184,7 +172,6 @@ function MapClone(map){
     })
     return newMap
 }
-
 let a={a:1,b:{},c:new RegExp(/123/),d:new Date,e:new Set(),f:new Map(),g:[],h:function(){console.log(1)}}
 a.e.add(a.b)
 a.f.set(a.c,a.e)
