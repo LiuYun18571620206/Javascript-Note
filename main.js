@@ -241,3 +241,140 @@ function model(obj1,obj2,attribute){
         }
     })
 }
+//setTimeout模拟setInterval
+function SetInterval(fn,num,...cc){
+        function setInterval(){
+                fn(...cc)
+                setTimeout(setInterval,num,...cc)
+        }
+       setTimeout(setInterval,num)
+}
+
+//手写一个拖拽.js   拖拽基于窗口移动
+function Drag(dom,maxHeight,maxWidth,minHeight=0,minWidth=0){
+        let DragPlay=false
+        let left=0
+        let top=0
+        dom.style.position='absolute'
+        dom.style.left=minWidth+'px'
+        dom.style.top=minHeight+'px'
+        function DomDragPlay(e){
+                DragPlay=true
+                left=e.screenX
+                top=e.screenY
+        }
+        function bodyDragMouseMove(e){
+                if(!DragPlay)return
+                let NowLeft=e.screenX
+                let NowTop=e.screenY
+                left=parseInt(dom.style.left)+NowLeft-left
+                top=parseInt(dom.style.top)+NowTop-top
+                if(left>maxWidth){
+                        left=maxWidth
+                }
+                if(top>maxHeight){
+                        top=maxHeight
+                }
+                if(top<minHeight){
+                        top=minHeight
+                }
+                if(left<minWidth){
+                        left=minWidth
+                }
+                dom.style.left=left+'px'
+                dom.style.top=top+'px'
+                left=NowLeft
+                top=NowTop
+        }
+        function bodyDragMouseUp(e){
+                DragPlay=false
+        }
+        dom.addEventListener('mousedown',DomDragPlay)
+        document.addEventListener('mousemove',bodyDragMouseMove)
+        document.addEventListener('mouseup',bodyDragMouseUp)
+        return function(){
+                dom.removeEventListener('mousedown',DomDragPlay)
+                document.removeEventListener('mousemove',bodyDragMouseMove)
+                document.removeEventListener('mouseup',bodyDragMouseUp)
+        }
+}
+
+//实现一个基本的Event Bus
+function EventBus(){
+        let obj={}
+        let listener=[]
+        obj.emit=function(...cc){
+                return listener.map(v=>v(...cc))
+        }
+        obj.getFN=function(fn){
+                if(Object.prototype.toString.call(fn)==='[object Function]'){
+                        listener.push(fn)
+                }
+        }
+        return obj
+}
+
+//手写实现Object.create
+Object.prototype.NEWcreate=function(proto){
+        return Object.setPrototypeOf({},proto)
+}
+
+//继承的几种方法 假设有构造函数A要继承构造函数B
+function protoExtend(a,b){
+        //原型继承
+        return Object.setPrototypeOf(new a,new b)
+}
+function A(B){
+        //借用构造函数
+        B.call(this)
+}
+function AB(A,B){
+        //组合继承
+        let obj=new A
+        let prototype=B.prototype
+        B.call(obj)
+        A.prototype.__proto__=prototype
+        return obj
+}
+
+//intanceOf实现
+function instanceOf(A,B){
+        let proto=Object.getPrototypeOf(A)
+        while(proto!==null){
+                if(proto.constructor===B){
+                        return true
+                }
+                proto=Object.getPrototypeOf(proto)
+        }
+        return false
+}
+
+//柯里化与反柯里化
+function curring(fn){
+        let list=[]
+        let klh=(...cc)=>{
+                if(cc.length!==0){
+                        list.push(...cc)
+                        return klh
+                }
+                else{
+                        return fn(...list)
+                }
+        }
+        return klh
+}
+Function.prototype.uncurring=function(){
+        return (obj,...cc)=>{
+                return this.call(obj,...cc)
+        }
+}
+
+//手写一个new操作符
+function NEW(fn){
+        let obj={}
+        let fnObj=fn.call(obj)
+        if(Object.prototype.toString.call(fnObj)==='[object Object]'){
+                return fnObj
+        }
+        return Object.setPrototypeOf(obj,fn.prototype)
+}
